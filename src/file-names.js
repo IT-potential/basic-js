@@ -16,34 +16,32 @@ const { NotImplementedError } = require('../extensions/index.js');
  *
  */
 function renameFiles(names) {
-  let names2 = names.map((v) => v);
-  let countDuplicate = {},
-    countDuplicate2 = {},
-    countDuplicate3 = {};
   let result = [];
-  let fileName;
+  let seen = new Set();
 
-  for (let name in names) {
-    let fileName = names[name];
-    if (countDuplicate[fileName] !== undefined) {
-      countDuplicate[fileName]++;
-      countDuplicate3[fileName]++;
+  for (let name of names) {
+    if (!seen.has(name)) {
+      // If the name is not already in the set, add it directly.
+      result.push(name);
+      seen.add(name);
     } else {
-      countDuplicate[fileName] = 1;
-      countDuplicate2[fileName] = 1;
-      countDuplicate3[fileName] = 1;
+      // Find the smallest integer suffix that makes the name unique.
+      let k = 1;
+      let newName = `${name}(${k})`;
+      
+      // Keep increasing k until we find a unique name.
+      while (seen.has(newName)) {
+        k++;
+        newName = `${name}(${k})`;
+      }
+      
+      // Add the new unique name to the result and the set.
+      result.push(newName);
+      seen.add(newName);
     }
   }
-  for (name in names) {
-    let fileName = names[name];
-    if (countDuplicate[fileName] > 0) {
-      let prefixNumber = countDuplicate2[fileName]++ - 1;
-      names[name] =
-        names[name] + (prefixNumber === 0 ? "" : "(" + prefixNumber + ")");
 
-      countDuplicate[fileName]--;
-    }
-  }
+  return result;
 }
 module.exports = {
   renameFiles

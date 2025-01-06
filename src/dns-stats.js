@@ -22,27 +22,22 @@ const { NotImplementedError } = require('../extensions/index.js');
  * }
  *
  */
-function getDNSStats(domains) {
-  let result = {}; // Объект для хранения статистики
+  function getDNSStats(domains) {
+    // Проходим по всем доменам
+    const stats = {};
 
-  // Проходим по всем доменам
-  domains.forEach(domain => {
-    // Разбиваем домен на части по точке
-    let parts = domain.split('.');
-    
-    // Создаем домены с точкой и добавляем их в результат
-    let domainPart = '';
-    for (let i = parts.length - 1; i >= 0; i--) {
-      domainPart = `.${parts[i]}${domainPart}`; // Добавляем точку перед каждой частью
-      if (result[domainPart]) {
-        result[domainPart]++;
-      } else {
-        result[domainPart] = 1;
-      }
-    }
-  });
-  return result;
-}
+    domains.forEach(domain => {
+      const parts = domain.split('.').reverse(); // Разбиваем домен на части и переворачиваем порядок
+      let subdomain = '';
+      
+      parts.forEach(part => {
+        subdomain = `.${part}${subdomain}`; // Добавляем поддомен к основной части
+        stats[subdomain] = (stats[subdomain] || 0) + 1; // Увеличиваем счетчик для данного поддомена
+      });
+    });
+  
+    return stats;
+  }
 
 module.exports = {
   getDNSStats

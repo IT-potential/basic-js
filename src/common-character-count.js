@@ -30,6 +30,7 @@ function getCommonCharacterCount(s1, s2) {
       j++;  // Если символ во второй строке меньше, переходим к следующему символу во второй строке
     }
   }
+  return commonCount;
 }
 
 module.exports = {

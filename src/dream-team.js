@@ -14,9 +14,19 @@ const { NotImplementedError } = require('../extensions/index.js');
  *
  */
 function createDreamTeam(members) {
-  return members.map(name => {
-    [A-Z].test(name) ? name.charAt(0) : '';
-  }).join('');
+   // Проверяем, является ли members массивом
+   if (!Array.isArray(members)) {
+    return false;
+  }
+  // Фильтруем массив, оставляя только строки, и проверяем их на пустоту
+  const team = members
+    .filter(name => typeof name === 'string')
+    .map(name => name.trim().charAt(0).toUpperCase())
+    .sort()
+    .join('');
+
+  // Если team пустой, возвращаем false
+  return team.length > 0 ? team : false;
 }
 
 module.exports = {

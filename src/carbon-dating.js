@@ -18,15 +18,27 @@ const HALF_LIFE_PERIOD = 5730;
  *
  */
 function dateSample(sampleActivity_s) {
+  const MODERN_ACTIVITY = 15; // Современная активность
+  const HALF_LIFE_PERIOD = 5730; // Период полураспада в годах
+  const k = Math.LN2 / HALF_LIFE_PERIOD; // Константа для вычисления возраста
+
+  // Преобразуем строку в число
   let sampleActivity = Number.parseFloat(sampleActivity_s);
+
+  // Проверяем валидность входных данных
   if (
-    typeof sampleActivity_s !== "string" ||
-    Number.isNaN(sampleActivity) ||
-    sampleActivity <= 0 ||
-    sampleActivity > MODERN_ACTIVITY
-  )
+    typeof sampleActivity_s !== "string" || // строка
+    Number.isNaN(sampleActivity) || // не NaN
+    sampleActivity <= 0 || // активность больше нуля
+    sampleActivity > MODERN_ACTIVITY // активность меньше или равна современному уровню
+  ) {
     return false;
-  return Math.ceil(Math.log(MODERN_ACTIVITY / sampleActivity) / k);
+  }
+
+  // Вычисляем возраст
+  let age = Math.ceil(Math.log(MODERN_ACTIVITY / sampleActivity) / k);
+
+  return age;
 }
 
 module.exports = {

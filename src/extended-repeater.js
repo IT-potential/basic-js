@@ -16,24 +16,20 @@ const { NotImplementedError } = require('../extensions/index.js');
  *
  */
 function repeater(str, options) {
-  let result = [];
-  let additions = [];
-  if (options.separator != true) {
-    options.separator = "+";
-  }
-  if (options.additionSeparator != true) {
-    options.separator = "|";
-  }
-  for (let i = 0; i < options.repeatTimes; i++) {
-    result.push(str);
-  }
-  for (let i = 0; i < options.additionRepeatTimes; i++) {
-    additions.push(options.addition);
-  }
-  for (let i = 0; i < result.length - 1; i++) {
-    result[i] += additions.join(options.additionSeparator);
-  }
-  return result.join(options.separator);
+// Устанавливаем значения по умолчанию для параметров
+let repeatTimes = options.repeatTimes || 1; // если repeatTimes не передан, по умолчанию 1
+let separator = options.separator || '+'; // если separator не передан, по умолчанию '+'
+let addition = options.addition !== undefined ? String(options.addition) : ''; // если addition не передан, пустая строка
+let additionRepeatTimes = options.additionRepeatTimes || 1; // если additionRepeatTimes не передан, по умолчанию 1
+let additionSeparator = options.additionSeparator || '|'; // если additionSeparator не передан, по умолчанию '|'
+
+// Создаём строку дополнений
+let additionString = new Array(additionRepeatTimes).fill(addition).join(additionSeparator);
+
+// Создаём основную строку
+let result = new Array(repeatTimes).fill(str + additionString).join(separator);
+
+return result;
 }
 
 module.exports = {

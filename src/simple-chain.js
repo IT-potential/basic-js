@@ -9,8 +9,9 @@ const chainMaker = {
   getLength() {
     return this.chain.length;
   },
+
   addLink(value) {
-    this.chain.push(`( ${value} )`);
+    this.chain.push(value);
     return this; // Return chainMaker to allow chaining
   },
 
@@ -18,6 +19,7 @@ const chainMaker = {
   removeLink(position) {
     // Проверяем, является ли позиция допустимой
     if (position < 1 || position > this.chain.length || !Number.isInteger(position)) {
+      this.chain = [];
       throw new Error("You can't remove incorrect link!");
     }
     this.chain.splice(position - 1, 1); // Удаляем элемент по позиции
@@ -37,9 +39,19 @@ const chainMaker = {
 
   // Завершить цепочку и вернуть строку
   finishChain() {
-    const result = this.chain.join(' -> '); // Собираем цепочку в строку
-    this.chain = []; // Очищаем цепочку
-    return result; // Возвращаем результат
+    const result = this.chain.map(item => {
+      if (item === null) {
+        return '( null )';
+      } else if (item === undefined) {
+        return '( undefined )';
+      } else if (typeof item === 'object') {
+        return `( ${item.toString()} )`;
+      } else {
+        return `( ${item} )`;
+      }
+    }).join('~~');
+    this.chain = []; // Reset the chain for further usage
+    return result;
   }
 };
 
