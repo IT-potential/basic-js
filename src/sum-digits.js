@@ -13,8 +13,23 @@ const { NotImplementedError } = require('../extensions/index.js');
  *
  */
 function getSumOfDigits(/* n */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+  let sum = String(n);
+  // дано число.
+  // разбить его на цифры
+  // необх сложить все цифры между собойю
+  // пока сумма цифр >=10 тогда снова сложить цифры между собой
+  // если обратное тогда return sum
+  // надо сложить цифры в числе.
+
+  while (sum.length > 1) {
+    let new_sum = 0;
+    for (let j = 0; j < sum.length; j++) {
+      new_sum += +sum[j];
+    }
+    sum = String(new_sum);
+  }
+  // console.log(number);
+  return +sum;
 }
 
 module.exports = {

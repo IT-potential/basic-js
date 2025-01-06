@@ -5,25 +5,41 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 const chainMaker = {
+  chain: [],
   getLength() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+    return this.chain.length;
   },
-  addLink(/* value */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  addLink(value) {
+    this.chain.push(`( ${value} )`);
+    return this; // Return chainMaker to allow chaining
   },
-  removeLink(/* position */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+
+  // Удалить ссылку по индексу
+  removeLink(position) {
+    // Проверяем, является ли позиция допустимой
+    if (position < 1 || position > this.chain.length || !Number.isInteger(position)) {
+      throw new Error("You can't remove incorrect link!");
+    }
+    this.chain.splice(position - 1, 1); // Удаляем элемент по позиции
+    return this; // Возвращаем chainMaker для цепочки методов
   },
+
+  // Перевернуть цепочку
   reverseChain() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+    this.chain.reverse(); // Переворачиваем массив цепочки
+    return this; // Возвращаем chainMaker для цепочки методов
   },
+
+  // Получить длину цепочки
+  getLength() {
+    return this.chain.length; // Возвращаем количество ссылок
+  },
+
+  // Завершить цепочку и вернуть строку
   finishChain() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+    const result = this.chain.join(' -> '); // Собираем цепочку в строку
+    this.chain = []; // Очищаем цепочку
+    return result; // Возвращаем результат
   }
 };
 
